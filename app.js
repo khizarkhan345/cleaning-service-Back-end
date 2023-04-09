@@ -10,11 +10,84 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
+console.log(process.env.USER);
+console.log(process.env.HOST);
+console.log(process.env.PASSWORD);
+console.log(process.env.DATABASE);
+
 const db = mysql.createConnection({
-  user: "root",
-  host: "localhost",
-  password: "",
-  database: "custom",
+  user: process.env.USER,
+  host: process.env.HOST,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+});
+
+app.post("/addCustomer", (req, res) => {
+  const customerId = req.body.customerId;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const streetAddress = req.body.streetAddress;
+  const city = req.body.city;
+  const state = req.body.state;
+  const zipCode = req.body.zipCode;
+  const phoneNo = req.body.phoneNo;
+
+  db.query(
+    "INSERT INTO customers (customerId, firstName, lastName, email, streetAddress, city, state, zipCode, phoneNo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      customerId,
+      firstName,
+      lastName,
+      email,
+      streetAddress,
+      city,
+      state,
+      zipCode,
+      phoneNo,
+    ],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Record inserted Successfully!");
+      }
+    }
+  );
+});
+
+app.post("/addOrder", (req, res) => {
+  const orderId = req.body.orderId;
+  const totalBedrooms = req.body.totalBedrooms;
+  const totalBathrooms = req.body.totalBathrooms;
+  const totalLivingrooms = req.body.totalLivingrooms;
+  const totalKitchens = req.body.totalKitchens;
+  const appointmentDate = req.body.appointmentDate;
+  const appointmentTime = req.body.appointmentTime;
+  const totalPrice = req.body.totalPrice;
+  const customerId = req.body.customerId;
+
+  db.query(
+    "INSERT INTO orders (orderId, totalBedrooms, totalBathrooms, totalLivingrooms, totalKitchens, appointmentDate, appointmentTime, totalPrice, customerId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      orderId,
+      totalBedrooms,
+      totalBathrooms,
+      totalLivingrooms,
+      totalKitchens,
+      appointmentDate,
+      appointmentTime,
+      totalPrice,
+      customerId,
+    ],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Record inserted Successfully!");
+      }
+    }
+  );
 });
 
 app.listen(3001, () => {
