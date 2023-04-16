@@ -10,11 +10,6 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-console.log(process.env.USER);
-console.log(process.env.HOST);
-console.log(process.env.PASSWORD);
-console.log(process.env.DATABASE);
-
 const db = mysql.createConnection({
   user: process.env.USER,
   host: process.env.HOST,
@@ -90,6 +85,6 @@ app.post("/addOrder", (req, res) => {
   );
 });
 
-app.listen(3001, () => {
+app.listen(8080, () => {
   console.log("Your server is running on port 3001");
 });

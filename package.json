@@ -8,5 +8,16 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.8.0",
     "path": "^0.12.7"
-  }
+  },
+  "name": "back-end",
+  "description": "1. Clone the API and run the following command:\r    npm install",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }
