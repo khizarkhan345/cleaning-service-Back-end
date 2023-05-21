@@ -8,6 +8,10 @@
 # testing
 /coverage
 /nodecommands.config
+/CleaningAoo.zip
+/cleaningApp.zip
+/CleaningApp1.zip
+/CleaningApplication.zip
 
 # production
 /build
