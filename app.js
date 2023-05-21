@@ -7,17 +7,50 @@ const { text } = require("body-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  })
+);
+
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  next();
+});
+
+const PORT = process.env.PORT || 3001;
+
 const db = mysql.createConnection({
-  user: process.env.USER,
-  host: process.env.HOST,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+  user: process.env.RDS_USERNAME,
+  host: process.env.RDS_HOSTNAME,
+  password: process.env.RDS_PASSWORD,
+  database: process.env.RDS_DB_NAME,
+  port: process.env.RDS_PORT,
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello world");
 });
 
 app.post("/addCustomer", (req, res) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "http://khizar-cleaning-services.s3-website-us-east-1.amazonaws.com"
+  );
+
+  console.log("Add customer is called");
+
   const customerId = req.body.customerId;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -44,14 +77,29 @@ app.post("/addCustomer", (req, res) => {
     (err, result) => {
       if (err) {
         console.log(err);
+        res.send(err);
       } else {
         res.send("Record inserted Successfully!");
       }
     }
   );
+
+  res.send("Customer called");
 });
 
 app.post("/addOrder", (req, res) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "http://khizar-cleaning-services.s3-website-us-east-1.amazonaws.com"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Content-Length, X-Requested-With"
+  );
+
+  console.log("Add Order is called");
+
   const orderId = req.body.orderId;
   const totalBedrooms = req.body.totalBedrooms;
   const totalBathrooms = req.body.totalBathrooms;
@@ -78,13 +126,16 @@ app.post("/addOrder", (req, res) => {
     (err, result) => {
       if (err) {
         console.log(err);
+        res.send(err);
       } else {
         res.send("Record inserted Successfully!");
       }
     }
   );
+
+  res.send("Order called");
 });
 
-app.listen(8080, () => {
+app.listen(PORT, () => {
   console.log("Your server is running on port 3001");
 });
