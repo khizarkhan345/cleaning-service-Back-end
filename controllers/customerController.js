@@ -18,6 +18,7 @@ exports.postData = (req, res, next) => {
   const zipCode = req.body.zipCode;
   const phoneNo = req.body.phoneNo;
 
+  console.log(typeof phoneNo);
   customer
     .findOne({ where: { email: email } })
     .then((cust) => {

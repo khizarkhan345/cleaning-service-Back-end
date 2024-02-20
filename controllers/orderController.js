@@ -25,6 +25,7 @@ exports.postData = (req, res, next) => {
       appointmentDate: appointmentDate,
       appointmentTime: appointmentTime,
       totalCost: totalCost,
+      orderStatus: "Created",
       customerId: customerId,
     })
     .then((result) => {
