@@ -6,6 +6,7 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const { text } = require("body-parser");
 const dotenv = require("dotenv");
+
 dotenv.config();
 
 const app = express();
@@ -13,6 +14,8 @@ const app = express();
 // import routes
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(cors());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
